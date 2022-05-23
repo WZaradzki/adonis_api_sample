@@ -1,0 +1,49 @@
+version: "3.3"
+
+services:
+  mysql:
+    image: mysql/mysql-server:8.0
+    container_name: "mazam-mysql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: mazam
+      MYSQL_USER: mazam
+      MYSQL_PASSWORD: mazam
+      MYSQL_ROOT_PASSWORD: mazam
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - mazam-mysql:/var/lib/mysql
+    networks:
+      - mazam-platform
+
+  # redis:
+  #   build:
+  #     context: ./bin/redis
+  #   container_name: "redis"
+  #   networks:
+  #     - mazam-platform
+
+  # mongodb:
+  #   build:
+  #     context: ./bin/mongodb
+  #   container_name: "mongodb"
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: root
+  #     MONGO_INITDB_DATABASE: mazam
+  #   ports:
+  #     - "27019:27017"
+  #   volumes:
+  #     - ./bin/mongodb/setup:/setup
+  #   networks:
+  #     - mazam-platform
+
+volumes:
+  mazam-mysql:
+
+
+networks:
+  mazam-platform:
+    driver: bridge

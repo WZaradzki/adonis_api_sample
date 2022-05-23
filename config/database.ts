@@ -34,7 +34,7 @@ const databaseConfig: DatabaseConfig = {
     |
     */
     mysql: {
-      client: 'mysql',
+      client: 'mysql2',
       connection: {
         host: Env.get('MYSQL_HOST'),
         port: Env.get('MYSQL_PORT'),
@@ -45,11 +45,10 @@ const databaseConfig: DatabaseConfig = {
       migrations: {
         naturalSort: true,
       },
-      healthCheck: false,
-      debug: false,
+      healthCheck: true,
+      debug: true,
     },
-
-  }
+  },
 }
 
 export default databaseConfig
