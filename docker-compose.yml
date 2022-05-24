@@ -19,8 +19,14 @@ services:
       - mazam-platform
 
   redis:
-    image: redis:latest
+    image: 'redis:alpine'
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
     container_name: "mazam-redis"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
     networks:
       - mazam-platform
 

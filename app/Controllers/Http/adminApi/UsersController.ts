@@ -1,31 +1,50 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import AuthorListValidator from 'App/Validators/adminApi/User/UserListValidator'
+import Hash from '@ioc:Adonis/Core/Hash'
 
-import Database from '@ioc:Adonis/Lucid/Database'
+import UserCreateValidator from 'App/Validators/adminApi/User/UserCreateValidator'
+import UserLoginValidator from 'App/Validators/adminApi/User/UserLoginValidator'
+import UserListValidator from 'App/Validators/adminApi/User/UserListValidator'
+
 import User from 'App/Models/User'
 
-export default class AuthorsController {
+export default class UsersController {
   public async list({ request }: HttpContextContract) {
-    const payload = await request.validate(AuthorListValidator)
+    const payload = await request.validate(UserListValidator)
 
-    let query = Database.query().from(User.TABLE)
-
-    if (payload.search) {
-      query = query.where(User.NAME, 'like', `%${payload.search}%`)
-    }
-
-    return await query
+    return await User.query()
+      .if(payload.search, (query) => {
+        query.withScopes((scopes) => scopes.searchFor(payload.search))
+      })
+      .paginate(payload.page ?? 1, payload.perPage ?? 10)
+      .then((response) => {
+        return response.serialize()
+      })
   }
 
-  public async create({}: HttpContextContract) {}
+  public async create({ request }: HttpContextContract) {
+    const payload = await request.validate(UserCreateValidator)
 
-  //   public async store({ }: HttpContextContract) { }
+    return await User.create({
+      name: payload.name,
+      surname: payload.surname,
+      email: payload.email,
+      password: await Hash.make(payload.password),
+    })
+  }
 
-  //   public async show({ }: HttpContextContract) { }
+  public async login({ request, auth, response }: HttpContextContract) {
+    const payload = await request.validate(UserLoginValidator)
 
-  //   public async edit({ }: HttpContextContract) { }
+    try {
+      return await auth.attempt(payload.email, payload.password, {
+        expiresIn: '1hour',
+      })
+    } catch (error) {
+      return error
+    }
+  }
 
-  //   public async update({ }: HttpContextContract) { }
-
-  //   public async destroy({ }: HttpContextContract) { }
+  public async update({ params, request }: HttpContextContract) {
+    return request
+  }
 }

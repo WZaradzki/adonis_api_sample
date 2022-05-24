@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import Author from 'App/Models/Author'
+import User from 'App/Models/User'
 
 export default class BlogPost extends BaseModel {
   @column({ isPrimary: true })
@@ -29,8 +29,8 @@ export default class BlogPost extends BaseModel {
   public static CREATED_AT = 'createdAt'
   public static UPDATED_AT = 'updatedAt'
 
-  @belongsTo(() => Author, {
+  @belongsTo(() => User, {
     foreignKey: BlogPost.USER_ID,
   })
-  public author: BelongsTo<typeof Author>
+  public user: BelongsTo<typeof User>
 }

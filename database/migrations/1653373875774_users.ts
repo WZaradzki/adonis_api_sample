@@ -12,6 +12,14 @@ export default class UsersSchema extends BaseSchema {
       table.text('bio').nullable()
       table.string('img_url').nullable()
 
+      table
+        .uuid('role_id')
+        .references('id')
+        .inTable('roles')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+        .nullable()
+
       table.string('email', 255).notNullable()
       table.string('password', 180).notNullable()
       table.string('remember_me_token').nullable()
