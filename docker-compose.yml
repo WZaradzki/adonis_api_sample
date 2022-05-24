@@ -18,12 +18,11 @@ services:
     networks:
       - mazam-platform
 
-  # redis:
-  #   build:
-  #     context: ./bin/redis
-  #   container_name: "redis"
-  #   networks:
-  #     - mazam-platform
+  redis:
+    image: redis:latest
+    container_name: "mazam-redis"
+    networks:
+      - mazam-platform
 
   # mongodb:
   #   build:

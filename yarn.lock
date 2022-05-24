@@ -53,6 +53,15 @@
     picomatch "^2.3.1"
     slash "^3.0.0"
 
+"@adonisjs/auth@^8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@adonisjs/auth/-/auth-8.2.1.tgz#85a79b438c675847f490e21a9331b492e2c71a81"
+  integrity sha512-rLtbefIzyHAq3UZgiE47WyZyc+92t4jPF8n/MeRV6FNIIdnAdQypBrz+K5lZZDNF5n3kOcbeii6SNH4KvDm6Og==
+  dependencies:
+    "@poppinss/hooks" "^5.0.3"
+    "@poppinss/utils" "^4.0.4"
+    luxon "^2.4.0"
+
 "@adonisjs/bodyparser@^8.1.4":
   version "8.1.5"
   resolved "https://registry.yarnpkg.com/@adonisjs/bodyparser/-/bodyparser-8.1.5.tgz#78004d35c761b43386ff126bcc16639e12ff6050"
@@ -248,6 +257,14 @@
     pirates "^4.0.5"
     rev-hash "^3.0.0"
     source-map-support "^0.5.21"
+
+"@adonisjs/session@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@adonisjs/session/-/session-6.4.0.tgz#464201a02df6a5d05c3ff423565ab0e7914c355d"
+  integrity sha512-9yHS60lFpNBUX5/yB+0j+bXQDWqbaYJ1JelLCYtaKRa7B0NewvmPAmsNpHH8SrXE3XGaRyKOxrUGRcmSGg5mRA==
+  dependencies:
+    "@poppinss/utils" "^4.0.4"
+    fs-extra "^10.1.0"
 
 "@adonisjs/sink@^5.3.2":
   version "5.3.2"
