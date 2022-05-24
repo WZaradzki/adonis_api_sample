@@ -1,16 +1,18 @@
 import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Models/User'
+import Role from 'App/Models/Role'
 
-export default class UserLoginValidator {
+export default class UpdateValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    email: schema.string({}, [
-      rules.email(),
-      rules.exists({ table: User.TABLE, column: User.EMAIL }),
+    name: schema.string({}, [
+      rules.unique({
+        table: Role.TABLE,
+        column: Role.NAME,
+        whereNot: { [Role.ID]: this.ctx.params.id },
+      }),
     ]),
-    password: schema.string(),
   })
 
   public messages: CustomMessages = {}

@@ -2,22 +2,38 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Hash from '@ioc:Adonis/Core/Hash'
 
 import UserCreateValidator from 'App/Validators/adminApi/User/UserCreateValidator'
-import UserLoginValidator from 'App/Validators/adminApi/User/UserLoginValidator'
 import UserListValidator from 'App/Validators/adminApi/User/UserListValidator'
 
 import User from 'App/Models/User'
+import UserUpdateValidator from 'App/Validators/adminApi/User/UserUpdateValidator'
+import Role from 'App/Models/Role'
 
 export default class UsersController {
   public async list({ request }: HttpContextContract) {
     const payload = await request.validate(UserListValidator)
 
     return await User.query()
+      .preload('role', (query) => {
+        query.select([Role.ID, Role.NAME])
+      })
       .if(payload.search, (query) => {
         query.withScopes((scopes) => scopes.searchFor(payload.search))
       })
       .paginate(payload.page ?? 1, payload.perPage ?? 10)
       .then((response) => {
         return response.serialize()
+      })
+  }
+
+  public async single({ request, params, response }: HttpContextContract) {
+    return await User.query()
+      .preload('role', (query) => {
+        query.select([Role.ID, Role.NAME])
+      })
+      .where(User.ID, params.id)
+      .firstOrFail()
+      .then((user) => {
+        return user.serialize()
       })
   }
 
@@ -32,19 +48,26 @@ export default class UsersController {
     })
   }
 
-  public async login({ request, auth, response }: HttpContextContract) {
-    const payload = await request.validate(UserLoginValidator)
+  public async update({ params, request, response }: HttpContextContract) {
+    const user = await User.findOrFail(params.id)
+    const payload = await request.validate(UserUpdateValidator)
 
-    try {
-      return await auth.attempt(payload.email, payload.password, {
-        expiresIn: '1hour',
+    return await user
+      .merge({
+        [User.NAME]: payload.name ?? user[User.NAME],
+        [User.SURNAME]: payload.surname ?? user[User.SURNAME],
+        [User.EMAIL]: payload.email ?? user[User.EMAIL],
+        [User.BIO]: payload.bio ?? user[User.BIO],
+        [User.IMG_URL]: payload.imgUrl ?? user[User.IMG_URL],
+        [User.ROLE_ID]: payload.roleId ?? user[User.ROLE_ID],
+        [User.PASSWORD]: payload.password ?? user[User.PASSWORD],
       })
-    } catch (error) {
-      return error
-    }
-  }
-
-  public async update({ params, request }: HttpContextContract) {
-    return request
+      .save()
+      .then((user) => {
+        return user.serialize()
+      })
+      .catch((error) => {
+        throw error
+      })
   }
 }

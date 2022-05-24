@@ -4,12 +4,15 @@ import User from 'App/Models/User'
 import Role from 'App/Models/Role'
 
 export default class UserUpdateValidator {
-  constructor(protected ctx: HttpContextContract) { }
+  constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    // roleId: schema.string.nullableAndOptional({}, [ rules.exists({
-    //   table: Role.TABLE
-    // }) ])
+    roleId: schema.string.nullableAndOptional({}, [
+      rules.exists({
+        table: Role.TABLE,
+        column: Role.ID,
+      }),
+    ]),
     name: schema.string.nullableAndOptional(),
     surname: schema.string.nullableAndOptional(),
     bio: schema.string.nullableAndOptional(),

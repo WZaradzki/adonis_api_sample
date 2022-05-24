@@ -24,7 +24,7 @@ export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: string
 
-  @column({ isPrimary: true })
+  @column()
   public roleId: string
 
   @column()
@@ -51,7 +51,7 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
   @beforeCreate()
