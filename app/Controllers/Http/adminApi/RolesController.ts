@@ -7,10 +7,12 @@ import Role from 'App/Models/Role'
 
 export default class RolesController {
   public async list({}: HttpContextContract) {
-    return await Role.query().then((response) => {
-      return response.map((role) => {
-        role.serialize()
+    return await Role.all().then((response) => {
+      const roles = response.map((role) => {
+        return role.serialize()
       })
+
+      return roles
     })
   }
 
