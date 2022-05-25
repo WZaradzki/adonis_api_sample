@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Hash from '@ioc:Adonis/Core/Hash'
 
 import UserCreateValidator from 'App/Validators/adminApi/User/UserCreateValidator'
 import UserListValidator from 'App/Validators/adminApi/User/UserListValidator'
@@ -44,7 +43,7 @@ export default class UsersController {
       name: payload.name,
       surname: payload.surname,
       email: payload.email,
-      password: await Hash.make(payload.password),
+      password: payload.password,
     })
   }
 

@@ -13,6 +13,12 @@ Route.group(() => {
     Route.post('/', 'adminApi/RolesController.create')
     Route.put('/:id', 'adminApi/RolesController.update')
   }).prefix('/roles')
+  Route.group(() => {
+    Route.get('/', 'adminApi/BlogPostsController.list')
+    Route.get('/:id', 'adminApi/BlogPostsController.single')
+    Route.post('/', 'adminApi/BlogPostsController.create')
+    Route.put('/:id', 'adminApi/BlogPostsController.update')
+  }).prefix('/blog-posts')
 })
   .prefix('/admin')
   .middleware('auth:api')

@@ -1,4 +1,4 @@
-import { DateTime, InvalidZone } from 'luxon'
+import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import {
   column,
@@ -18,9 +18,6 @@ import BlogPost from 'App/Models/BlogPost'
 import Role from './Role'
 
 export default class User extends BaseModel {
-  public static primaryKey = 'uuid'
-  public static selfAssignPrimaryKey = true
-
   @column({ isPrimary: true })
   public id: string
 

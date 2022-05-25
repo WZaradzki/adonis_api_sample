@@ -6,6 +6,8 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
+      table.string('meta_title').nullable()
+      table.text('meta_description').nullable()
       table.string('title')
       table.text('text')
 
