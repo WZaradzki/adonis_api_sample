@@ -5,12 +5,18 @@ export default class AuthController {
   public async login({ request, auth }: HttpContextContract) {
     const payload = await request.validate(LoginValidator)
 
+    let token
     try {
-      return await auth.use('api').attempt(payload.email, payload.password, {
+      token = await auth.use('api').attempt(payload.email, payload.password, {
         expiresIn: '1day',
       })
     } catch (error) {
       throw error
+    }
+
+    return {
+      authToken: token,
+      me: auth.user?.serialize(),
     }
   }
 
@@ -19,5 +25,9 @@ export default class AuthController {
     return {
       revoked: true,
     }
+  }
+
+  public async me({ auth }: HttpContextContract) {
+    return await auth.user?.serialize()
   }
 }

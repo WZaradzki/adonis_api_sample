@@ -21,7 +21,7 @@ export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: string
 
-  @column()
+  @column({ serializeAs: 'roleId' })
   public roleId: string
 
   @column()
@@ -33,7 +33,7 @@ export default class User extends BaseModel {
   @column()
   public bio?: string
 
-  @column()
+  @column({ serializeAs: 'imgUrl' })
   public imgUrl?: string
 
   @column()
@@ -45,10 +45,10 @@ export default class User extends BaseModel {
   @column({ serializeAs: null })
   public rememberMeToken?: string
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, serializeAs: 'createdAt' })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: 'updatedAt' })
   public updatedAt: DateTime
 
   @beforeCreate()
